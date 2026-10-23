@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>System Delivery AI</title>
+<style>
+:root{color-scheme:light;--navy:#101a32;--navy2:#18294a;--blue:#4169f5;--gold:#e4bd68;--ink:#17233a;--muted:#718096;--line:#e3e9f3;--panel:#fff;--soft:#f4f7fc}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Tahoma,Arial,sans-serif;color:var(--ink)}
+body{background:radial-gradient(ellipse at 12% 0%,#e5ebff 0,transparent 34%),linear-gradient(145deg,#f5f7fc,#edf1f8)}
+button,textarea{font:inherit}
+.shell{max-width:none;width:100%;margin:0 auto;min-height:100dvh;padding:12px;display:flex;flex-direction:column;gap:12px}
+header{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;border:1px solid #ffffff1c;border-radius:24px;padding:22px 25px;display:flex;gap:15px;align-items:center;box-shadow:0 18px 44px #14234320}
+header:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #e4bd6833;border-radius:50%;left:-48px;top:-100px;box-shadow:0 0 0 22px #e4bd6808,0 0 0 45px #e4bd6806;pointer-events:none}
+.logo{width:56px;height:56px;flex:0 0 56px;border-radius:18px;background:linear-gradient(145deg,#ffffff20,#ffffff08);border:1px solid #ffffff38;display:grid;place-items:center;color:var(--gold);font-size:29px;box-shadow:inset 0 1px #ffffff20}
+h1{font-size:22px;letter-spacing:.1px;margin:0 0 7px}header p{margin:0;color:#d2dbed;font-size:13px;line-height:1.8}
+.status{margin-inline-start:auto;position:relative;z-index:1;border:1px solid #ffffff30;background:#ffffff0d;border-radius:999px;padding:9px 12px;font-size:12px;white-space:nowrap;color:#f2f5fc}
+.layout{display:grid;grid-template-columns:180px minmax(0,1fr);gap:10px;flex:1;min-height:0}
+aside,.chat{background:var(--panel);border:1px solid #e1e7f1;border-radius:22px;box-shadow:0 12px 34px #1b2a4709}
+aside{padding:20px;height:max-content}
+aside h2{font-size:15px;margin:0 0 17px;color:var(--navy)}
+.rule{display:flex;gap:10px;margin:14px 0;font-size:12px;line-height:1.9;color:#48556b}.dot{color:#c69b43;font-size:11px;padding-top:3px}
+.tip{background:linear-gradient(135deg,#fff9ec,#fffdf8);border:1px solid #f0dfb6;border-radius:15px;padding:13px;font-size:12px;line-height:1.9;color:#70551f;margin-top:20px}
+.chat{display:flex;flex-direction:column;min-height:65vh;min-width:0;padding:18px;overflow:hidden}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2px 14px;border-bottom:1px solid var(--line);flex:0 0 auto}
+.chat-title{display:flex;align-items:center;gap:10px}.assistant-mark{width:36px;height:36px;border-radius:12px;background:#edf1ff;color:var(--blue);display:grid;place-items:center;font-size:18px}
+.chat-head h2{font-size:15px;margin:0 0 4px;color:var(--navy)}.chat-head span{font-size:11px;color:var(--muted)}
+#usage{max-width:45%;text-align:left;line-height:1.6}
+.composer{flex:0 0 auto;padding:14px 0 13px;border-bottom:1px solid var(--line);background:#fff}
+.composer-label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;font-weight:700;color:#35435d;margin:0 2px 8px}
+.composer-label span{font-size:11px;font-weight:400;color:#8b95a6}
+.input-wrap{position:relative}
+.composer textarea{display:block;width:100%;min-height:76px;max-height:170px;resize:vertical;border:1px solid #d8e1ef;border-radius:16px;padding:13px 14px;background:#fafdff;color:var(--ink);font-size:14px;line-height:1.8;outline:none;transition:border-color .18s,box-shadow .18s}
+.composer textarea:focus{border-color:#8ca4ff;box-shadow:0 0 0 4px #4169f512;background:#fff}
+.composer textarea::placeholder{color:#98a2b4}
+.controls{display:flex;align-items:center;gap:9px;margin-top:10px;flex-wrap:wrap}
+.controls #send{flex:0 0 auto;min-width:150px}.controls #pdf{white-space:nowrap}.composer textarea{scroll-margin-bottom:12px}
+@media(min-width:721px){.composer{padding:10px 0}.composer-label{margin-bottom:6px}.controls{margin-top:8px}.controls small{min-width:160px}.messages{padding-top:12px}}
+button{border:0;border-radius:12px;padding:11px 16px;background:linear-gradient(135deg,#4b70fb,#3158df);color:#fff;font-weight:700;cursor:pointer;box-shadow:0 5px 12px #315ee81c;transition:transform .15s,filter .15s}
+button:hover{filter:brightness(1.04);transform:translateY(-1px)}button:active{transform:translateY(0)}button:disabled{opacity:.58;cursor:wait;box-shadow:none}
+.secondary{background:#f0f3f8;color:#3c4960;border:1px solid #e2e7f0;box-shadow:none}
+.controls small{color:var(--muted);font-size:10px;flex:1;line-height:1.7;min-width:140px}
+.examples{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.examples button{font-size:11px;font-weight:500;padding:7px 10px;background:#f5f7fc;color:#46536a;border:1px solid #e4e9f2;box-shadow:none;border-radius:999px}
+.examples button:hover{background:#edf1ff;color:#284fca;border-color:#ccd7ff}
+.messages{flex:1;display:flex;flex-direction:column;gap:12px;padding:16px 2px 4px;min-height:250px;overflow:auto;overscroll-behavior:contain;scroll-behavior:smooth}
+.msg{max-width:min(90%,720px);padding:12px 15px;border-radius:16px;font-size:13px;line-height:1.95;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 3px 10px #17233a05}
+.ai{align-self:flex-start;background:#f4f7fc;border:1px solid #e4eaf4;border-top-left-radius:5px}
+.user{align-self:flex-end;background:linear-gradient(145deg,#eaf0ff,#f2f5ff);border:1px solid #d6e0ff;border-top-right-radius:5px}
+@media(min-width:721px){.shell{padding:8px;gap:8px}.layout{grid-template-columns:160px minmax(0,1fr);gap:8px}.chat{height:calc(100dvh - 80px);min-height:0;padding:12px}.messages{min-height:0}.composer textarea{min-height:64px;max-height:110px}.msg{max-width:min(96%,1100px)}}
+@media(max-width:720px){body{background:#f3f6fb}.shell{padding:10px;gap:10px;min-height:100dvh}header{padding:15px;border-radius:19px;gap:11px}.logo{width:43px;height:43px;flex-basis:43px;border-radius:14px;font-size:23px}h1{font-size:17px}header p{font-size:11px;line-height:1.6}.status{display:none}.layout{grid-template-columns:1fr;gap:10px}.chat{padding:13px;border-radius:19px;min-height:68dvh}.chat-head{padding-bottom:11px}.chat-head h2{font-size:14px}.composer{padding:11px 0}.composer textarea{min-height:70px;font-size:13px}.controls{gap:7px}.controls button{padding:10px 12px;font-size:12px}.controls small{font-size:10px;min-width:100px}.examples{gap:6px}.examples button{font-size:10px;padding:7px 9px}.messages{min-height:210px}.msg{max-width:96%;font-size:12px;padding:10px 12px}aside{order:2;padding:16px}.rule{margin:10px 0}}
+body.embed-mode{background:#fff}
+.embed-mode,.embed-mode body{height:100%;min-height:0;overflow:hidden}
+.embed-mode .shell{max-width:none;width:100%;min-width:0;min-height:0;height:100%;padding:0;gap:0}
+.embed-mode header,.embed-mode aside{display:none}
+.embed-mode .layout{display:block;min-width:0;min-height:0;height:100%;flex:1}
+.embed-mode .chat{width:100%;max-width:none;min-width:0;box-sizing:border-box;border:0;border-radius:0;box-shadow:none;padding:10px 22px;min-height:0;height:100%;max-height:100%;overflow:hidden}
+.embed-mode .chat-head{padding-top:2px;flex:0 0 auto}
+.embed-mode .messages{order:2;min-height:0;flex:1;width:100%;padding:16px 4px;overscroll-behavior:contain}
+.embed-mode .composer{order:3;position:relative;z-index:2;flex:0 0 auto;width:100%;padding:8px 0 8px}
+.embed-mode .composer-label{margin-bottom:7px}
+.embed-mode .controls{margin-top:8px}
+.embed-mode .msg{width:fit-content;min-width:min(40%,280px);max-width:96%}.embed-mode .ai{align-self:flex-start}.embed-mode .user{align-self:flex-end}
+.embed-mode .composer textarea{width:100%;min-height:68px;max-height:120px}
+@media(min-width:721px){.embed-mode .chat{padding:10px 28px}.embed-mode .messages{padding:12px 8px}.embed-mode .composer textarea{min-height:76px;max-height:100px}.embed-mode .controls{flex-wrap:nowrap}.embed-mode .controls #send{min-width:170px}.embed-mode .msg{max-width:min(96%,1400px)}}@media(max-width:720px){.embed-mode .chat{padding:10px 12px}.embed-mode .composer textarea{min-height:64px;max-height:90px}.embed-mode .controls{flex-wrap:wrap}.embed-mode .controls #send{min-width:130px}}
+@media print{body{background:#fff!important}.shell{max-width:none;padding:0}.layout{display:block}.chat{height:auto;min-height:0;overflow:visible;border:0;box-shadow:none}.messages{overflow:visible;display:block;min-height:0}.msg{max-width:100%;break-inside:avoid;margin:8px 0}.composer,.chat-head #usage,.status,aside{display:none!important}header{background:#fff!important;color:#111;box-shadow:none;border:0;padding:0}header p{color:#333}header:after{display:none}.logo{color:#111;border-color:#ddd;background:#fff;box-shadow:none}}
+.embed-mode .examples{display:none}
+</style>
+</head>
+<body><script>if(new URLSearchParams(location.search).get("embed")==="1")document.documentElement.classList.add("embed-mode");</script>
+<div class="shell">
+<header><div class="logo" aria-hidden="true">✦</div><div><h1>System Delivery AI</h1><p>مساعد ذكي لتشخيص أخطاء نظام التوصيل ومراجعة خطوات الإصلاح بأمان</p></div><span class="status" id="serviceStatus">جارٍ التحقق من الاتصال…</span></header>
+<div class="layout">
+<aside><h2>قواعد الأمان</h2>
+<div class="rule"><span class="dot">●</span><span>يحلل المشكلة ويشرح السبب المحتمل بالعربية.</span></div>
+<div class="rule"><span class="dot">●</span><span>لا يغيّر حالات الأوردرات أو الإسناد أو الحسابات المالية.</span></div>
+<div class="rule"><span class="dot">●</span><span>لا ينشر كودًا ولا يدمج تعديلًا من تلقاء نفسه.</span></div>
+<div class="rule"><span class="dot">●</span><span>لا ترسل كلمات مرور أو مفاتيح API أو بيانات عملاء حساسة.</span></div>
+<div class="tip">إذا تعذّر اتصال مزوّد الذكاء الاصطناعي، سيظهر سبب الخطأ بدلًا من ادعاء نجاح الإصلاح.</div>
+</aside>
+<section class="chat" aria-label="محادثة المساعد">
+<div class="chat-head"><div class="chat-title"><div class="assistant-mark" aria-hidden="true">✦</div><div><h2>محادثة التشخيص</h2><span>اسأل عن المشكلة وسنبدأ من هنا</span></div></div><span id="usage">جاهز للمساعدة</span></div>
+<div class="composer">
+<div class="composer-label">اكتب رسالتك هنا <span>Enter للإرسال · Shift + Enter لسطر جديد</span></div>
+<textarea id="prompt" maxlength="6000" placeholder="اشرح المشكلة أو الصق رسالة الخطأ هنا…"></textarea>
+<div class="controls"><button id="send" type="button">إرسال للمساعد&nbsp; ↗</button><button id="clear" class="secondary" type="button">محادثة جديدة</button><button id="pdf" class="secondary" type="button">حفظ PDF ⤓</button><small>المحادثة للتشخيص فقط؛ لا تنفّذ تغييرات على بيانات التشغيل.</small></div>
+<div class="examples"><button type="button" data-example="عداد الشحنات في لوحة التحكم لا يطابق الأوردرات المسندة فعليًا.">مشكلة في العدادات</button><button type="button" data-example="تسوية المندوب لا تُحفظ. كيف أشخص السبب بأمان؟">مشكلة في التسوية</button><button type="button" data-example="أريد مراجعة منطق Cancelled by Receiver في التقارير المالية.">مراجعة الحسابات</button></div>
+</div>
+<div class="messages" id="messages" aria-live="polite"><div class="msg ai">أهلًا يا ميدو 👋 اشرح المشكلة أو ابعت رسالة الخطأ، وأنا هساعدك بشكل مباشر ولبق. تقدر تضغط «حفظ PDF» لحفظ المحادثة كملف PDF من نافذة الطباعة.</div></div>
+</section></div></div>
+<script>
+(function(){
+const $=id=>document.getElementById(id),messages=$('messages');let pendingReportPrompt='';
+function add(text,who){const el=document.createElement('div');el.className='msg '+who;el.textContent=text;messages.appendChild(el);messages.scrollTop=messages.scrollHeight;return el}
+function safeHtml(value){return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+const reportLabels={orders_count:'عدد الأوردرات',total_orders:'عدد الأوردرات',cod_total:'إجمالي قيمة الأوردرات',delivery_fees:'رسوم التوصيل',commission_total:'إجمالي العمولات',expenses_total:'إجمالي المصاريف',settlement_total:'إجمالي التسويات',cash_total:'إجمالي الكاش',credit_total:'إجمالي الكريدت',invoice_count:'عدد الفواتير',merchant_due:'مستحق التاجر',status_filter:'حالة الفواتير'};
+function reportTableHtml(section,limit=500){
+ const columns=Array.isArray(section.columns)?section.columns:[];
+ const rows=Array.isArray(section.rows)?section.rows:[];
+ return '<h3>'+safeHtml(section.title||'التفاصيل')+'</h3><div style="overflow:auto;max-width:100%"><table><thead><tr>'+columns.map(col=>'<th>'+safeHtml(col.label||col.key)+'</th>').join('')+'</tr></thead><tbody>'+
+ (rows.slice(0,limit).map(row=>'<tr>'+columns.map(col=>'<td>'+safeHtml(row[col.key])+'</td>').join('')+'</tr>').join('')||'<tr><td colspan="'+Math.max(1,columns.length)+'">لا توجد سجلات ضمن الفترة المحددة.</td></tr>')+
+ '</tbody></table></div>'+(section.truncated?'<p>عدد السجلات كبير؛ الملف يعرض السجلات المتاحة في التقرير.</p>':'');
+}
+function renderReportCard(report){
+ const card=document.createElement('div');card.className='msg ai ai-report';card.style.cssText='width:min(96%,1100px);max-width:100%;padding:14px;background:#fff;border:1px solid #dbe4f0;border-radius:14px;overflow:hidden';
+ const summary=Object.entries(report.summary||{}).map(([key,value])=>'<div style="border:1px solid #e3eaf3;border-radius:9px;padding:8px 10px;background:#f8fafc"><small style="display:block;color:#64748b;font-size:10px">'+safeHtml(reportLabels[key]||key)+'</small><b style="font-size:13px;color:#172b4d">'+safeHtml(value)+'</b></div>').join('');
+ const sections=(report.sections||[]).map(section=>reportTableHtml(section,80)).join('');
+ card.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px"><div><strong>'+safeHtml(report.title||'تقرير النظام')+'</strong><div style="font-size:11px;color:#64748b;margin-top:4px">'+safeHtml(report.entity||'')+' — '+safeHtml(report.from||'')+(report.to&&report.to!==report.from?' إلى '+safeHtml(report.to):'')+'</div></div><button type="button" data-print-report style="white-space:nowrap">حفظ التقرير PDF</button></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:7px;margin-bottom:12px">'+summary+'</div>'+sections+(report.signature_label?'<div style="margin-top:26px;padding-top:12px;border-top:1px solid #e2e8f0;text-align:left">____________________<br>'+safeHtml(report.signature_label)+'</div>':'')+'<p style="font-size:10px;color:#64748b;margin:8px 0 0">المصدر: بيانات النظام الفعلية. اضغط حفظ التقرير PDF لطباعة التقرير الكامل.</p>';
+ card.querySelector('[data-print-report]')?.addEventListener('click',()=>printReport(report));
+ messages.appendChild(card);messages.scrollTop=messages.scrollHeight;
+}
+function printReport(report){
+ const sections=(report.sections||[]).map(section=>reportTableHtml(section,10000)).join('');
+ const summary=Object.entries(report.summary||{}).map(([key,value])=>'<tr><th>'+safeHtml(reportLabels[key]||key)+'</th><td>'+safeHtml(value)+'</td></tr>').join('');
+ const title=safeHtml(report.title||'Delivery Report');
+ const html='<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+'</title><style>body{font:13px Tahoma,Arial,sans-serif;color:#172033;padding:24px}h1{font-size:20px;margin:0 0 6px}h2{font-size:15px;margin:20px 0 8px}h3{font-size:14px;margin:16px 0 8px}.meta{color:#64748b;margin-bottom:14px}table{width:100%;border-collapse:collapse;margin:8px 0 16px}th,td{border:1px solid #cbd5e1;padding:7px;text-align:right;vertical-align:top}th{background:#edf2f7}.sign{margin-top:36px;text-align:left}@media print{body{padding:0}tr{break-inside:avoid}}</style></head><body><h1>'+title+'</h1><div class="meta">'+safeHtml(report.entity||'')+' — '+safeHtml(report.from||'')+(report.to&&report.to!==report.from?' إلى '+safeHtml(report.to):'')+'</div><h2>الملخص</h2><table><tbody>'+summary+'</tbody></table>'+sections+(report.signature_label?'<div class="sign">____________________<br>'+safeHtml(report.signature_label)+'</div>':'')+'</body></html>';
+ const modal=document.createElement('div');modal.style.cssText='position:fixed;inset:0;z-index:99999;background:#0b1220cc;display:flex;align-items:center;justify-content:center;padding:12px';
+ modal.innerHTML='<section style="width:min(1100px,98vw);height:94vh;background:#fff;border-radius:12px;overflow:hidden;display:flex;flex-direction:column"><header style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;background:#111827;color:#fff"><strong>'+title+'</strong><div><button type="button" data-print style="padding:8px 12px">طباعة / حفظ PDF</button><button type="button" data-close style="padding:8px 12px">إغلاق ×</button></div></header><iframe title="PDF preview" style="width:100%;height:100%;flex:1;border:0;background:#e9edf3"></iframe></section>';
+ const frame=modal.querySelector('iframe');frame.srcdoc=html;modal.querySelector('[data-close]').onclick=()=>modal.remove();modal.addEventListener('click',e=>{if(e.target===modal)modal.remove()});modal.querySelector('[data-print]').onclick=()=>frame.contentWindow.print();document.body.appendChild(modal);
+}
+$('pdf').addEventListener('click',()=>{const oldTitle=document.title;document.title='System-Delivery-AI-Chat';window.print();document.title=oldTitle;});
+async function status(){try{const r=await fetch('/api/system-delivery-ai/status',{credentials:'include',cache:'no-store'});const d=await r.json();$('serviceStatus').textContent=d.configured?'متصل بالمزود':'يحتاج إعداد المزود';}catch(_){$('serviceStatus').textContent='واجهة أولية — API غير متاح';}}
+async function send(){const typedPrompt=$('prompt').value.trim();if(!typedPrompt||$('send').disabled)return;let prompt=typedPrompt;if(pendingReportPrompt&&!/(كشف|تسوية|فاتورة|statement|settlement|invoice|report|تقرير)/i.test(typedPrompt)&&typedPrompt.length<=160){prompt=pendingReportPrompt+' '+typedPrompt;pendingReportPrompt='';}else if(/(كشف|تسوية|فاتورة|statement|settlement|invoice|report|تقرير)/i.test(typedPrompt)){pendingReportPrompt='';}add(typedPrompt,'user');$('prompt').value='';$('send').disabled=true;$('usage').textContent='جارٍ تحليل المشكلة…';const pending=add('جارٍ الاتصال بالمساعد…','ai');messages.scrollTop=messages.scrollHeight;
+try{const r=await fetch('/api/system-delivery-ai/chat',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({message:prompt})});const raw=await r.text();let d={};try{d=raw?JSON.parse(raw):{};}catch(_){}
+if(!r.ok){const rawText=String(raw||'');if(r.status===503&&(/App unavailable/i.test(rawText)||/<!doctype html/i.test(rawText))){throw new Error('الاستضافة أعادت صفحة App unavailable (HTTP 503) بدل رد API. هذا يشير غالبًا إلى أن خدمة Deplexo غير متاحة أو يجري تشغيلها من جديد، وليس دليلًا على نقص مفتاح المزوّد. راجع حالة الخدمة وسجل التشغيل في Deplexo.');}const detail=String(d.error||d.message||d.msg||d.error_description||raw||'رفض الخادم الطلب').replace(/(?:AIza[0-9A-Za-z_-]{20,})/g,'[تم إخفاء المفتاح]').replace(/https?:\/\/\S+/g,'[رابط محذوف]').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').slice(0,500);throw new Error('HTTP '+r.status+': '+detail);}
+pending.textContent=d.reply||'لم يصل رد من المساعد.';if(d.report){renderReportCard(d.report);pendingReportPrompt='';}else if(/حدد التاريخ|حدد اسم المندوب|حدد اسم التاجر|أكثر من مندوب|أكثر من تاجر/.test(String(d.reply||''))){pendingReportPrompt=prompt;}$('usage').textContent=d.report?'تم تجهيز التقرير':'تم استلام الرد';}
+catch(e){pending.textContent='فشل إرسال الرسالة: '+e.message+'\nإعداد المزود ظاهر على السيرفر، لذلك تعرض الرسالة سبب الفشل بدل افتراض أن المفتاح ناقص.';$('usage').textContent='فشل الطلب — راجع التفاصيل أعلاه';}
+finally{$('send').disabled=false;$('prompt').focus();messages.scrollTop=messages.scrollHeight;}}
+$('send').addEventListener('click',send);
+// Keep the send action visible and predictable in desktop and embedded chat layouts.
+$('prompt').addEventListener('input',()=>{$('prompt').style.height='auto';$('prompt').style.height=Math.min($('prompt').scrollHeight,150)+'px';});
+$('prompt').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+$('clear').addEventListener('click',()=>{messages.replaceChildren();add('بدأت محادثة جديدة. اشرح المشكلة وسأساعدك في التشخيص.','ai');$('usage').textContent='جاهز للمساعدة';$('prompt').focus();});
+document.querySelectorAll('[data-example]').forEach(b=>b.addEventListener('click',()=>{$('prompt').value=b.dataset.example;$('prompt').focus();}));
+status();
+})();
+</script></body></html>
