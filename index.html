@@ -1,0 +1,148 @@
+<!doctype html>
+<!-- admin-tools-root-archive-move-20261019-1 -->
+<!-- owner-only-system-admin-role-20261019-1-return-completion-permission-paid-separation-20261019-1-return-proof-preview-search-timeline-order-creator-20261019-2-fixed-overlay-archive-default-last-7-days-20261019-1-archive-layout-scrollbar-20261019-1-patch-outscan-assignment-date-fix-20261019-1 -->
+<html lang="ar" dir="rtl">
+
+<head>
+  <!-- merchant-account-management-20261019-30-employee-edit-group-only-20261019-31 -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Delivery</title>
+  <meta property="og:title" content="Delivery">
+  <meta name="twitter:title" content="Delivery">
+  <link rel="stylesheet" href="/styles.css?v=cumulative-quick-search-20261023-1-delivery-job-fit-return-proof-20261023-4">
+
+
+<!-- sidebar-colors-20261019-33 merchant-account-click-scroll-20261019-34 price-audit-false-positive-20261019-35-return-completion-permission-paid-separation-20261019-1-return-proof-preview-search-timeline-order-creator-20261019-2-fixed-overlay -->
+</head>
+
+<body>
+
+  <!-- APP -->
+  <div id="login" class="center hidden" style="display:none!important">
+    <div class="card login-card">
+      <div class="login-logo" aria-hidden="true" style="display:grid;place-items:center;background:#101a32;color:#fff;font-size:34px;font-weight:800;letter-spacing:1px">D</div>
+      <h1>Delivery</h1>
+      <p class="muted">System Login</p>
+      <label>Username / Email<input id="username" autocomplete="username" autofocus></label>
+      <label>Password<input id="password" type="password" autocomplete="current-password"></label>
+      <button id="loginBtn" type="button" onclick="login()">Login</button>
+      <div id="loginMsg" class="msg error"></div>
+      <div class="login-footer">Designed by Mohamed Hoseany</div>
+    </div>
+  </div>
+
+  <div id="app" class="hidden" style="display:none!important">
+
+    <header>
+
+      <div class="brand brand-with-logo">
+        <div class="brand-logo-wrap" aria-hidden="true"><span style="display:grid;place-items:center;width:100%;height:100%;background:#101a32;color:#fff;font-size:28px;font-weight:850;letter-spacing:1px">D</span></div>
+        <div class="brand-user">
+          <strong>Delivery</strong>
+          <span id="currentUserName">—</span>
+        </div>
+      </div>
+
+      <button id="mobileSidebarToggle" class="mobile-sidebar-toggle" type="button" aria-label="فتح القائمة" onclick="toggleMobileSidebar();return false;">☰</button><div class="header-actions">
+
+        <button class="ghost" onclick="toggleLang()" type="button">AR / EN</button>
+        <button id="notificationBell" class="notification-bell header-icon-btn" type="button" aria-label="الإشعارات" title="الإشعارات" onclick="openNotifications()"><span aria-hidden="true">🔔</span><span id="notificationBadge" class="notification-badge hidden">0</span><span id="chatUnreadBadge" class="notification-badge chat-notification-badge" hidden>0</span></button>
+        <button id="notificationSoundToggle" class="header-icon-btn sound-toggle" type="button" aria-label="كتم صوت الإشعارات" title="كتم صوت الإشعارات" onclick="toggleNotificationSound()"><span id="notificationSoundIcon" aria-hidden="true">🔔</span></button>
+        <button id="logoutBtn" class="danger" type="button" onclick="logout();return false;">تسجيل الخروج</button>
+
+
+      </div>
+
+    </header>
+    <div class="mobile-sidebar-scrim" id="mobileSidebarScrim"></div>
+
+
+    <div class="layout">
+
+      <!-- SIDEBAR -->
+      <aside id="sidebar">
+
+        <button onclick="show('dashboard')">
+          لوحة التحكم
+        </button>
+
+        <button onclick="show('order')">
+          إدخال أوردر
+        </button>
+
+        <button onclick="show('search')">
+          بحث
+        </button>
+
+        <button onclick="show('jobs')">
+          مهام التوصيل
+        </button>
+
+        <button onclick="show('jobcode')">
+          تحديث كود مهمة التوصيل
+        </button>
+
+        <button onclick="show('returns')">
+          المرتجعات للتاجر
+        </button>
+
+        <button onclick="show('return-driver')">
+          Return by Driver
+        </button>
+
+        <button onclick="show('merchants')">
+          التجار
+        </button>
+
+        <button onclick="show('drivers')">
+          السائقون
+        </button>
+
+        <button onclick="show('areas')">
+          الإمارات والمناطق
+        </button>
+
+        <button onclick="show('accounting')">
+          الحسابات
+        </button>
+<button onclick="show('audit')">
+          سجل العمليات
+        </button>
+
+      </aside>
+
+
+      <!-- CONTENT -->
+      <main id="content"></main>
+
+    </div>
+
+      <footer class="site-footer">Designed by <strong>Mohamed Hoseany</strong></footer>
+
+  </div>
+
+
+  <!-- SINGLE FRONTEND APP -->
+  <script>
+  // Temporary visible diagnostics: catch frontend bootstrap errors without DevTools.
+  (function(){
+    function report(kind, message, detail){
+      try {
+        var box=document.getElementById("trend-runtime-diagnostic");
+        if(!box){ box=document.createElement("div"); box.id="trend-runtime-diagnostic"; box.style.cssText="position:fixed;z-index:2147483647;left:8px;right:8px;bottom:8px;max-height:40vh;overflow:auto;background:#fff4e5;color:#4a2600;border:2px solid #b45309;border-radius:8px;padding:12px;font:13px/1.5 monospace;white-space:pre-wrap;direction:ltr;text-align:left;"; document.body.appendChild(box); }
+        box.textContent="Trend runtime diagnostic (SHIPPER-SETTLEMENT-PRINT-RUNTIME-FIX-20261017-14)\n"+kind+": "+String(message||"Unknown error")+(detail?"\n"+detail:"");
+      } catch(_) {}
+    }
+    window.addEventListener("error",function(e){report("window.error",e.message,(e.filename||"")+":"+(e.lineno||"")+":"+(e.colno||""));});
+    window.addEventListener("unhandledrejection",function(e){var r=e.reason;report("unhandledrejection",r&&r.message?r.message:String(r),r&&r.stack?r.stack:"");});
+    window.__TREND_REPORT_RUNTIME_ERROR=report;
+  })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <script src="/app.js?v=cumulative-quick-search-20261023-1-delivery-job-fit-return-proof-20261023-4" onerror="window.__TREND_REPORT_RUNTIME_ERROR&&window.__TREND_REPORT_RUNTIME_ERROR('app.js load failed','The frontend JavaScript file did not load')"></script>
+
+</body>
+
+</html>
